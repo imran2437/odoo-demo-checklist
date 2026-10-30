@@ -1,0 +1,17 @@
+{
+    'name': 'Daily Task Checklist',
+    'version': '19.0.1.0.0',
+    'summary': 'Private daily checklists with tasks, due dates and completion tracking',
+    'description': 'Create personal checklists, tick completed items and track progress within your company.',
+    'category': 'Productivity',
+    'author': 'Imran Odoo Consultant',
+    'support': 'imran.odoo.consultant@gmail.com',
+    'license': 'LGPL-3',
+    'price': 0.0,
+    'currency': 'EUR',
+    'depends': ['base'],
+    'data': ['security/security.xml', 'security/ir.model.access.csv', 'views/checklist_views.xml'],
+    'images': ['static/description/cover.png'],
+    'application': True,
+    'installable': True,
+}

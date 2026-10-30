@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="checklist_list" model="ir.ui.view">
+        <field name="name">imran.daily.checklist.list</field>
+        <field name="model">imran.daily.checklist</field>
+        <field name="arch" type="xml">
+            <list string="My Checklists">
+                <field name="name"/><field name="due_date"/>
+                <field name="completed_items"/><field name="total_items"/>
+                <field name="progress" widget="progressbar"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'in_progress'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+    <record id="checklist_form" model="ir.ui.view">
+        <field name="name">imran.daily.checklist.form</field>
+        <field name="model">imran.daily.checklist</field>
+        <field name="arch" type="xml">
+            <form string="Daily Checklist">
+                <header>
+                    <button name="action_complete_all" type="object" string="Complete All" class="btn-primary" invisible="not total_items or state == 'done'"/>
+                    <button name="action_reset" type="object" string="Reset Tasks" invisible="not completed_items"/>
+                    <field name="state" widget="statusbar" statusbar_visible="todo,in_progress,done"/>
+                </header>
+                <sheet>
+                    <field name="active" invisible="1"/>
+                    <div class="oe_title"><h1><field name="name" placeholder="e.g. Morning work checklist"/></h1></div>
+                    <group>
+                        <group><field name="due_date"/><field name="user_id" readonly="1"/><field name="company_id" groups="base.group_multi_company"/></group>
+                        <group><field name="completed_items"/><field name="total_items"/><field name="progress" widget="progressbar"/></group>
+                    </group>
+                    <field name="item_ids">
+                        <list editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="done"/><field name="name"/>
+                        </list>
+                    </field>
+                    <group><field name="notes" placeholder="Optional notes for your checklist..."/></group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="checklist_search" model="ir.ui.view">
+        <field name="name">imran.daily.checklist.search</field>
+        <field name="model">imran.daily.checklist</field>
+        <field name="arch" type="xml">
+            <search string="My Checklists">
+                <field name="name"/>
+                <filter name="open" string="Open" domain="[('state', '!=', 'done')]"/>
+                <filter name="due_date" string="Due Date" date="due_date"/>
+                <filter name="archived" string="Archived" domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_checklists" model="ir.actions.act_window">
+        <field name="name">My Checklists</field>
+        <field name="res_model">imran.daily.checklist</field>
+        <field name="view_mode">list,form</field>
+        <field name="path">daily-checklists</field>
+        <field name="help" type="html"><p class="o_view_nocontent_smiling_face">Create your first checklist</p><p>Add tasks, set a due date and tick off completed items.</p></field>
+    </record>
+    <menuitem id="menu_checklists_root" name="Daily Checklists" sequence="55" web_icon="imran_daily_checklist,static/description/icon.png" groups="base.group_user"/>
+    <menuitem id="menu_my_checklists" name="My Checklists" parent="menu_checklists_root" action="action_checklists" sequence="10"/>
+</odoo>
